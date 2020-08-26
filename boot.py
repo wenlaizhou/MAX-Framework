@@ -1,6 +1,6 @@
 #!/usr/bin/env python3.6
 
-from cyclone import MAXApp
+from cyclonefw import MAXApp
 
 app = MAXApp()
 app.run()

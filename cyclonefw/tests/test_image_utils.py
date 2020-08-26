@@ -22,13 +22,13 @@ import numpy as np
 from PIL import Image
 
 # The module to test
-from cyclone.utils.image_utils import ImageProcessor, ToPILImage, Resize, Grayscale, Normalize, Standardize, Rotate, \
+from cyclonefw.utils.image_utils import ImageProcessor, ToPILImage, Resize, Grayscale, Normalize, Standardize, Rotate, \
     PILtoarray
-from cyclone.core.utils import MAXImageProcessor
+from cyclonefw.core.utils import MAXImageProcessor
 
 # Initialize a test input file
 stream = io.BytesIO()
-Image.open('cyclone/tests/test_image.jpg').convert('RGBA').save(stream, 'PNG')
+Image.open('cyclonefw/tests/test_image.jpg').convert('RGBA').save(stream, 'PNG')
 test_input = stream.getvalue()
 
 

@@ -19,16 +19,16 @@ with open('README.md') as f:
     long_description = f.read()
 
 setup(
-    name='cyclone',
-    version='1.1.3',
+    name='cyclonefw',
+    version='1.0.0',
     description='A package to simplify the creation of MAX models',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/IBM/MAX-Framework',
+    url='https://github.com/wenlaizhou/oceanfw',
     author='CODAIT',
     author_email='djalova@us.ibm.com, nickp@za.ibm.com, brendan.dwyer@ibm.com',
     license='Apache',
-    packages=['cyclone', 'cyclone.core', 'cyclone.model', 'cyclone.utils'],
+    packages=['cyclonefw', 'cyclonefw.core', 'cyclonefw.model', 'cyclonefw.utils'],
     zip_safe=True,
     install_requires=[
         'flask-restx==0.1.1',

@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 from flask import abort
-from cyclone.utils.image_utils import ImageProcessor
+from cyclonefw.utils.image_utils import ImageProcessor
 
 
 def redirect_errors_to_flask(func):

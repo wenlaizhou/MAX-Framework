@@ -14,4 +14,4 @@
 # limitations under the License.
 #
 
-from cyclone.core import MAXApp
+from cyclonefw.core import MAXApp
