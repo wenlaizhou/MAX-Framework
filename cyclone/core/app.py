@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-from flask import Flask
+import os, time
+from flask import Flask, request, Response
 from flask_restx import Api, Namespace
 from flask_cors import CORS
 from .default_config import API_TITLE, API_DESC, API_VERSION
@@ -26,6 +26,7 @@ class MAXApp(object):
 
     def __init__(self, title=API_TITLE, desc=API_DESC, version=API_VERSION):
         self.app = Flask(title, static_url_path='')
+        self.metrics = {}
 
         # load config
         if os.path.exists("config.py"):
@@ -54,5 +55,60 @@ class MAXApp(object):
         def index():
             return self.app.send_static_file('index.html')
 
-    def run(self, host='0.0.0.0'):  # nosec - binding to all interfaces
-        self.app.run(host)
+    def after(self, resp):
+        if request.path == "/metrics":
+            return resp
+        accessTime = request.__getattr__("access_time")
+        done = int(time.time() * 1000) - accessTime
+        statusCode = resp.status_code
+        if statusCode not in self.metrics:
+            self.metrics[statusCode] = {}
+        if request.path not in self.metrics[statusCode]:
+            self.metrics[statusCode][request.path] = {
+                "count": 0,
+                "total": 0
+            }
+        self.metrics[statusCode][request.path]["count"] += 1
+        self.metrics[statusCode][request.path]["total"] += done
+        return resp
+
+    def before(self):
+        request.__setattr__('access_time', int(time.time() * 1000))
+
+    def run(self, host='0.0.0.0', port=5000):
+        """
+        启动服务
+        :param host: host, 默认为0.0.0.0
+        :param port: 端口, 默认为5000
+        :return:
+        """
+
+        @self.app.route("/metrics", methods=("GET",))
+        def metrics():
+            """
+            监控接口
+            :return:
+            """
+            resp = Response()
+            resp.headers.set('Content-Type', 'text/plain')
+            content = []
+            for code in self.metrics.keys():
+                pathData = self.metrics[code]
+                for path in pathData.keys():
+                    metricsData = pathData[path]
+                    content.append("{}{{{}}} {}".format(
+                        "count",
+                        'path="{}",code="{}"'.format(path, code),
+                        metricsData["count"]
+                    ))
+                    content.append("{}{{{}}} {}".format(
+                        "total",
+                        'path="{}",code="{}"'.format(path, code),
+                        metricsData["total"]
+                    ))
+            resp.set_data("\n".join(content))
+            return resp
+
+        self.app.before_request(self.before)
+        self.app.after_request(self.after)
+        self.app.run(host=host, port=port)
