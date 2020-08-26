@@ -32,11 +32,12 @@ def redirect_errors_to_flask(func):
         except ValueError as ve:
             if 'pic should be 2 or 3 dimensional' in str(ve):
                 abort(400, "Invalid input, please ensure the input is either "
-                      "a grayscale or a colour image.")
+                           "a grayscale or a colour image.")
         except TypeError as te:
             if 'bytes or ndarray' in str(te):
                 abort(400, "Invalid input format, please make sure the input file format "
-                      " is a common image format such as JPG or PNG.")
+                           " is a common image format such as JPG or PNG.")
+
     return inner
 
 
@@ -53,6 +54,7 @@ class MAXImageProcessor(ImageProcessor):
         >>> ])
         >>> pipeline.apply_transforms(img)
     """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 

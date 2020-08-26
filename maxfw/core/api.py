@@ -17,13 +17,13 @@ from .app import MAX_API
 from flask_restx import Resource, fields
 
 METADATA_SCHEMA = MAX_API.model('ModelMetadata', {
-        'id': fields.String(required=True, description='Model identifier'),
-        'name': fields.String(required=True, description='Model name'),
-        'description': fields.String(required=True, description='Model description'),
-        'type': fields.String(required=True, description='Model type'),
-        'source': fields.String(required=True, description='Model source'),
-        'license': fields.String(required=False, description='Model license')
-    })
+    'id': fields.String(required=True, description='Model identifier'),
+    'name': fields.String(required=True, description='Model name'),
+    'description': fields.String(required=True, description='Model description'),
+    'type': fields.String(required=True, description='Model type'),
+    'source': fields.String(required=True, description='Model source'),
+    'license': fields.String(required=False, description='Model license')
+})
 
 
 class MAXAPI(Resource):

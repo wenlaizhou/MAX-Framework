@@ -364,7 +364,6 @@ def test_imageprocessor_combinations():
 
 
 def test_flask_error():
-
     # Test invalid input format
     transform_sequence = [ToPILImage('RGB')]
     p = MAXImageProcessor(transform_sequence)
