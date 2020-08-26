@@ -15,9 +15,23 @@ model will get the `maxfw` package via the `MAX-Base` image.
 If you want to run a MAX model outside of a Docker container then you can install
 it with the following command:
 
-    $ pip install -U maxfw
+    $ pip install -U cyclonefw
 
 ## Usage
 
 For an example of this package being used in a MAX model, we recommend looking at the
 [MAX-Skeleton Repository on GitHub](https://github.com/IBM/MAX-Skeleton).
+
+## Demo
+
+```python
+
+#!/usr/bin/env python3
+
+from cyclonefw import MAXApp
+
+app = MAXApp()
+app.run()
+
+
+```
