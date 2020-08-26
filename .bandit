@@ -1,2 +1,2 @@
 [bandit]
-exclude: /maxfw/tests/
+exclude: /cyclonefw/tests/
