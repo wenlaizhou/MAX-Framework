@@ -19,7 +19,7 @@ with open('README.md') as f:
     long_description = f.read()
 
 setup(
-    name='maxfw',
+    name='cyclone',
     version='1.1.3',
     description='A package to simplify the creation of MAX models',
     long_description=long_description,
@@ -28,7 +28,7 @@ setup(
     author='CODAIT',
     author_email='djalova@us.ibm.com, nickp@za.ibm.com, brendan.dwyer@ibm.com',
     license='Apache',
-    packages=['maxfw', 'maxfw.core', 'maxfw.model', 'maxfw.utils'],
+    packages=['cyclone', 'cyclone.core', 'cyclone.model', 'cyclone.utils'],
     zip_safe=True,
     install_requires=[
         'flask-restx==0.1.1',
