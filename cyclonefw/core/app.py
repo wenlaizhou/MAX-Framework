@@ -18,6 +18,8 @@ from flask import Flask, request, Response
 from flask_restx import Api, Namespace
 from flask_cors import CORS
 from .default_config import API_TITLE, API_DESC, API_VERSION
+from .utils import getLogger, logHandler
+import logging
 
 MAX_API = Namespace('model', description='Model information and inference operations')
 
@@ -26,8 +28,8 @@ class MAXApp(object):
 
     def __init__(self, title=API_TITLE, desc=API_DESC, version=API_VERSION):
         self.app = Flask(title, static_url_path='')
+        self.app.logger.addHandler(logHandler("cyclonefw"))
         self.metrics = {}
-
         # load config
         if os.path.exists("config.py"):
             self.app.config.from_object("config")
@@ -42,8 +44,8 @@ class MAXApp(object):
         self.api.add_namespace(MAX_API)
 
         # enable cors if flag is set
-        if os.getenv('CORS_ENABLE') == 'true' and \
-                (os.environ.get('WERKZEUG_RUN_MAIN') == 'true' or self.app.debug is not True):
+        if os.getenv('CORS_ENABLE') == 'true' and (
+                os.environ.get('WERKZEUG_RUN_MAIN') == 'true' or self.app.debug is not True):
             CORS(self.app, origins='*')
             print('NOTE: MAX Model Server is currently allowing cross-origin requests - (CORS ENABLED)')
 

@@ -15,6 +15,8 @@
 #
 from flask import abort
 from cyclonefw.utils.image_utils import ImageProcessor
+import os, logging
+from logging.handlers import RotatingFileHandler
 
 
 def redirect_errors_to_flask(func):
@@ -61,3 +63,33 @@ class MAXImageProcessor(ImageProcessor):
     @redirect_errors_to_flask
     def apply_transforms(self, img):
         return super().apply_transforms(img)
+
+
+def logHandler(name, logPath="logs", formatter="%(asctime)s %(levelname)s %(message)s"):
+    if not os.path.exists(logPath):
+        os.makedirs(logPath)
+    handler = RotatingFileHandler("{}/{}.log".format(logPath, name), "a", 1024 * 1024 * 20, 10)
+    handler.setFormatter(logging.Formatter(formatter))
+    return handler
+
+
+def getLogger(name, formatter="%(asctime)s %(levelname)s %(message)s", logPath="logs", level=logging.DEBUG):
+    """
+    获取logger
+
+    日志记录使用如下格式: %s 等作为占位符
+
+    print "My name is %s and weight is %d kg!" % ('Zara', 21)
+
+    :param name: 日志名称
+    :param formatter: 日志格式
+    :param logPath: 日志目录, 默认为 logs目录下, 使用 . 可以指定当前执行目录
+    :param level: 日志级别
+    :return:
+    """
+    if not os.path.exists(logPath):
+        os.makedirs(logPath)
+    logger = logging.getLogger(name)
+    logger.setLevel(level)
+    logger.addHandler(logHandler(name, logPath, formatter))
+    return logger
